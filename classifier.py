@@ -8,6 +8,7 @@ from nltk.tokenize import word_tokenize, sent_tokenize
 from nltk.corpus import stopwords, wordnet
 from nltk.stem.snowball import SnowballStemmer
 from tagger import *
+import abstractness
 
 
 class Classifier:
@@ -25,6 +26,10 @@ class Classifier:
         nounSyns = synonyms(pairList[1], wn.NOUN)
         featureDict["adjSyns"] = len(adjSyns)
         featureDict["nounSyns"] = len(nounSyns)
+        featureDict["adjAbs"] = abstractness.getAbstractness(pairList[0])
+        featureDict["nounAbs"] = abstractness.getAbstractness(pairList[1])
+        featureDict["adjImg"] = abstractness.getImageability(pairList[0])
+        featureDict["nounImg"] = abstractness.getImageability(pairList[1])
         return featureDict
 
 
