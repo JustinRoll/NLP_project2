@@ -7,7 +7,7 @@ def loadVSM():
         parts = line.split()
         word = parts[0]
         parts = parts[1:]
-        parts = [float(part) for part in parts]
+        parts = [float(part) + 3 for part in parts]
         vsm[word] = parts
 
 def getVector(word):

@@ -26,8 +26,8 @@ class Classifier:
         featureSets = [(featureExtractor.getAdjNounFigurativeFeatures(d),label) for (d, label) in docs]
         firstThird = int(len(featureSets)/3)
         train, test = featureSets[:firstThird], featureSets[firstThird:]
-        #classifier = SklearnClassifier(RandomForestClassifier()).train(train)
-        classifier = SklearnClassifier(MultinomialNB()).train(train)
+        classifier = SklearnClassifier(RandomForestClassifier(), sparse=False).train(train)
+        #classifier = SklearnClassifier(MultinomialNB()).train(train)
         #print(classifier.show_most_informative_features(20))
         return nltk.classify.accuracy(classifier,test) 
 
