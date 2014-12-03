@@ -53,7 +53,7 @@ def parseTroFiCSV():
     ANList = []
     SVOList = []
 
-    with open('data/LIT_AN_EN.csv', newline='') as csvfile:
+    with open('data/LIT_AN_EN.csv', newline='', encoding="utf8") as csvfile:
         dataReader = csv.reader(csvfile, delimiter=',', quotechar='"')
         for row in dataReader:
             newAn = ANPair()
@@ -66,7 +66,7 @@ def parseTroFiCSV():
             newAn.label = "L"
             ANList.append(newAn)
 
-    with open('data/MET_AN_EN.csv', newline='') as csvfile:
+    with open('data/MET_AN_EN.csv', newline='', encoding="utf8") as csvfile:
         dataReader = csv.reader(csvfile, delimiter=',', quotechar='"')
         for row in dataReader:
             newAn = ANPair()
@@ -80,7 +80,7 @@ def parseTroFiCSV():
             ANList.append(newAn) 
 
 
-    with open('data/LIT_SVO_EN.csv', newline='') as csvfile:
+    with open('data/LIT_SVO_EN.csv', newline='', encoding="utf8") as csvfile:
         dataReader = csv.reader(csvfile, delimiter=',', quotechar='"')
         for row in dataReader:
             newSvo = SVO()
@@ -95,7 +95,7 @@ def parseTroFiCSV():
             newSvo.sentence = sentence
             SVOList.append(newSvo) 
 
-    with open('data/MET_SVO_EN.csv', newline='') as csvfile:
+    with open('data/MET_SVO_EN.csv', newline='', encoding="utf8") as csvfile:
         dataReader = csv.reader(csvfile, delimiter=',', quotechar='"')
         for row in dataReader:
             newSvo = SVO()
