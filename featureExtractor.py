@@ -15,13 +15,8 @@ import abstractness, vsmFeatures
 #any other ideas?
 def getAdjNounFigurativeFeatures(pair):
     featureDict = {}
-    pairList = pair.split(" ")
-    print(pairList)
-    tags = pos_tag(word_tokenize(pair))
-    adjSyns = synonyms(pairList[0], wn.ADJ) #these features suck. just an example
-    nounSyns = synonyms(pairList[1], wn.NOUN)
-    #featureDict["adjSyns"] = len(adjSyns)
-    #featureDict["nounSyns"] = len(nounSyns)
+    pairList = [pair.adj, pair.noun]
+    print(pairList, pair.sentence)
     adjVsm  = vsmFeatures.getVector(pairList[0])
     nounVsm = vsmFeatures.getVector(pairList[1])
     if len(adjVsm) > 0:
