@@ -12,7 +12,7 @@ from sklearn.ensemble import RandomForestClassifier
 import abstractness, vsmFeatures
 from conceptmap import ConceptNetCollector
 import pickle
-import abstractness, vsmFeatures, wsdFeature
+import abstractness, vsmFeatures, wsdFeature, posFeatures
 
 #get number of synsets, tagged POS, path similarity, conceptNet relations
 #any other ideas?
@@ -83,5 +83,6 @@ def getAdjNounFigurativeFeatures(pair):
     featureDict["adjImg"] = abstractness.getImageability(pairList[0]) #> .5
     featureDict["nounImg"] = abstractness.getImageability(pairList[1]) #> .5
 
-    featureDict.update(wsdFeature.getSenseLocs((pair.adj, pair.noun), pair.sentence))
+    #featureDict.update(wsdFeature.getSenseLocs((pair.adj, pair.noun), pair.sentence))
+    #featureDict.update(posFeatures.getPartOfSpeechData((pair.adj, pair.noun), pair.sentence))
     return featureDict
