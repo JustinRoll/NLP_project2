@@ -31,6 +31,17 @@ class Classifier:
         #print(classifier.show_most_informative_features(20))
         return nltk.classify.accuracy(classifier,test) 
 
+    def classifyAdjNounFigurativeFeaturesString(self, literalPairs, figPairs):
+        docs = [(pair, 'lit') for pair in literalPairs] + [(pair, 'fig') for pair in figPairs]
+        random.shuffle(docs)
+        #print(docs)
+        featureSets = [(featureExtractor.getAdjNounFigurativeFeaturesString(d),label) for (d, label) in docs]
+        firstThird = int(len(featureSets)/3)
+        train, test = featureSets[:firstThird], featureSets[firstThird:]
+        classifier = SklearnClassifier(RandomForestClassifier(), sparse=False).train(train)
+        #classifier = SklearnClassifier(MultinomialNB()).train(train)
+        #print(classifier.show_most_informative_features(20))
+        return nltk.classify.accuracy(classifier,test)  
 
     def incrementDictCount(self, item, incDict):
         if item in incDict:

@@ -14,9 +14,12 @@ def getAllPairs(fileName):
     return pairs
 
 def main():
-    #literalPairs = getAllPairs('data/adjnoun_fig.txt')
-    #figPairs = getAllPairs('data/adjnoun_lit.txt')
+    literalPairs = getAllPairs('data/adjnoun_fig.txt')
+    figPairs = getAllPairs('data/adjnoun_lit.txt')
     anPairs, svoPairs = trofiparser.parseTroFiCSV()
     classifier = Classifier()
+
+    #print("Overall Score Average accuracy: %f" % classifier.classifyAdjNounFigurativeFeaturesString(literalPairs, figPairs))
+
     print("Overall Score Average accuracy: %f" % classifier.classifyAdjNounFigurativeFeatures(anPairs))
 main() 

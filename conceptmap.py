@@ -28,6 +28,16 @@ class ConceptNetCollector:
         for edge in edges:
             print("%s --> %s --> %s" % (edge.start, edge.rel, edge.end))
 
+    def countRelations(self, term):
+        lookup = LookUp(limit=50)
+        response = lookup.search_concept(term)
+        response = Result(response)
+        edges = response.parse_all_edges(clean_self_ref = True)
+        i = 0
+        for edge in edges:
+            i+=1
+        return i
+
     def getAssociations(self, term1, term2):
         #{'similar': [['/c/en/forward_movement', 0.9190159689410096]], 'terms': [['/c/en/momentum', 1.0]]}
         # get how similar cats and dogs 

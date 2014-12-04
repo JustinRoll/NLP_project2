@@ -18,10 +18,10 @@ import abstractness, vsmFeatures, wsdFeature
 #any other ideas?
 
 collector = ConceptNetCollector()
-pickledPairs = pickle.load(open("pairs.p", "rb"))
+pickledPairs = pickle.load(open("pairs10results2.p", "rb"))
 
 def getConceptNetScores(term1, term2):
-    resultDict = collector.getAssociations('liquid', 'value').result
+    resultDict = collector.getAssociations(term1, term2).result
     resultScore = 0
     for assoc, item in resultDict.items():
         if item and item[0] and len(item[0]) > 1:
@@ -30,8 +30,35 @@ def getConceptNetScores(term1, term2):
                     resultScore += score[1]   
     return resultScore  
 
-def getAdjNounFigurativeFeatures(pair):
+def getAdjNounFigurativeFeaturesString(pairString):
+    featureDict = {}
+    pairList = pairString.split(" ")
+    print(pairList)
+    if " ".join(pairList) in pickledPairs:
+        associationScore = pickledPairs[" ".join(pairList)]
+        print(associationScore)
+        featureDict["association_score"] = associationScore
+    tags = pos_tag(word_tokenize(" ".join(pairList)))
     
+    adjVsm  = vsmFeatures.getVector(pairList[0])
+    nounVsm = vsmFeatures.getVector(pairList[1])
+    #if len(adjVsm) > 0:
+    #    for i in range(len(adjVsm)):
+    #        featureDict["adjVsm"+str(i)] = adjVsm[i]
+
+    #if len(nounVsm) > 0:
+    #    for i in range(len(nounVsm)):
+    #        featureDict["nounVsm"+str(i)] = nounVsm[i]
+    
+    #featureDict["adjAbs"] = abstractness.getAbstractness(pairList[0]) #> .5
+    #featureDict["nounAbs"] = abstractness.getAbstractness(pairList[1]) #> .5
+    #featureDict["adjImg"] = abstractness.getImageability(pairList[0]) #> .5
+    #featureDict["nounImg"] = abstractness.getImageability(pairList[1]) #> .5
+
+    return featureDict 
+
+
+def getAdjNounFigurativeFeatures(pair):
     featureDict = {}
     pairList = [pair.adj, pair.noun]
     if " ".join(pairList) in pickledPairs:

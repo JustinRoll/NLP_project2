@@ -22,6 +22,24 @@ def getConceptNetScoresMaster(term1, term2):
                     continue
                 break
 
+def getConceptNetNumrelationsMaster(term1, term2):
+    try:
+        return collector.countRelations(term1 + " " + term2)
+    except:
+        for i in range(0, 10):
+            while True:
+
+                time.sleep(5)
+                try:
+                    return collector.countRelations(term1 + " " + term2)
+                except:
+                    e = sys.exc_info()[0]
+                    print(e)
+                    continue
+                break 
+
+
+
 def getConceptNetScores(term1, term2):
     resultDict = collector.getAssociations(term1, term2).result
     resultScore = 0
@@ -53,20 +71,20 @@ def main():
     
     for pair in anPairs:
         print(pair.adj + " " + pair.noun)
-        associationScore =  getConceptNetScoresMaster(pair.adj, pair.noun)
-        savedDict[pair] = associationScore
+        associationScore =  getConceptNetNumrelationsMaster(pair.adj, pair.noun)
+        savedDict[pair.adj + " " + pair.noun] = associationScore
         print(associationScore)
 
     for pair in figPairs:
         pairList = pair.split(" ")
         print(pairList)
-        associationScore = getConceptNetScoresMaster(pairList[0], pairList[1])
+        associationScore = getConceptNetNumrelationsMaster(pairList[0], pairList[1])
         savedDict[pair] = associationScore
     for pair in literalPairs:
         pairList = pair.split(" ")
         print(pairList)
-        associationScore = getConceptNetScoresMaster(pairList[0], pairList[1])
+        associationScore = getConceptNetNumrelationsMaster(pairList[0], pairList[1])
         savedDict[pair] = associationScore
-    pickle.dump(savedDict, open( "pairs10results.p", "wb" ))
+    pickle.dump(savedDict, open( "pairsRelationsResults.p", "wb" ))
     print(savedDict)
 main() 
