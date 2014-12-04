@@ -11,10 +11,4 @@ def getPositions(words, sentence):
             if stemmed_sentence[i] == stemmed_words[j]:
                 positions[words[j]] = i
     return positions
-
-
-words = ["clear", "sky"]
-sentence = nltk.word_tokenize("Clear blue skies are more common, and the air is fresher.")
-
-print(getPositions(words, sentence))
                     

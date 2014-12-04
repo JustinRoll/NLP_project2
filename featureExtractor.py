@@ -9,14 +9,17 @@ from nltk.corpus import stopwords, wordnet
 from nltk.stem.snowball import SnowballStemmer
 from tagger import *
 from sklearn.ensemble import RandomForestClassifier
-import abstractness, vsmFeatures
+import abstractness, vsmFeatures, wsdFeature
 
 #get number of synsets, tagged POS, path similarity, conceptNet relations
 #any other ideas?
 def getAdjNounFigurativeFeatures(pair):
     featureDict = {}
     pairList = [pair.adj, pair.noun]
+    
     print(pairList, pair.sentence)
+
+    
     adjVsm  = vsmFeatures.getVector(pairList[0])
     nounVsm = vsmFeatures.getVector(pairList[1])
     if len(adjVsm) > 0:
@@ -31,4 +34,6 @@ def getAdjNounFigurativeFeatures(pair):
     featureDict["nounAbs"] = abstractness.getAbstractness(pairList[1]) #> .5
     featureDict["adjImg"] = abstractness.getImageability(pairList[0]) #> .5
     featureDict["nounImg"] = abstractness.getImageability(pairList[1]) #> .5
+
+    featureDict.update(wsdFeature.getSenseLocs((pair.adj, pair.noun), pair.sentence))
     return featureDict
