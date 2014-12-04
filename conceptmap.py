@@ -29,13 +29,13 @@ class ConceptNetCollector:
             print("%s --> %s --> %s" % (edge.start, edge.rel, edge.end))
 
     def getAssociations(self, term1, term2):
-
+        #{'similar': [['/c/en/forward_movement', 0.9190159689410096]], 'terms': [['/c/en/momentum', 1.0]]}
         # get how similar cats and dogs 
-        a = Association(filter=self.getConceptUri(term1), limit=5)
+        a = Association(filter=self.getConceptUri(term1), limit=10)
         data = a.get_similar_concepts(term2)
         r = Result(data)
         # print results in key = value format 
-        r.print_raw_result()
+        return r
 
     def makeConceptMap(self, term, modifier):
         lookup = LookUp(limit=500)

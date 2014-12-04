@@ -10,13 +10,34 @@ from nltk.stem.snowball import SnowballStemmer
 from tagger import *
 from sklearn.ensemble import RandomForestClassifier
 import abstractness, vsmFeatures
-
+from conceptmap import ConceptNetCollector
+import pickle
 #get number of synsets, tagged POS, path similarity, conceptNet relations
 #any other ideas?
+
+collector = ConceptNetCollector()
+pickledPairs = pickle.load(open("pairs.p", "rb")) 
+
+def getConceptNetScores(term1, term2):
+    for assoc, item in resultDict.items():
+        if item and item[0] and len(item[0]) > 1:
+            if assoc == 'similar':
+                for score in item:
+                    resultScore += item[0][1]  
+ 
+    except:
+        print("throttled")
+        
+    return resultScore  
+
 def getAdjNounFigurativeFeatures(pair):
     featureDict = {}
     pairList = pair.split(" ")
-    print(pairList)
+    associationScore = pickledPairs[pair] 
+    print("%s score: %f" % (str(pairList), associationScore))
+    
+
+    featureDict["association_score"] = associationScore-1
     tags = pos_tag(word_tokenize(pair))
     adjSyns = synonyms(pairList[0], wn.ADJ) #these features suck. just an example
     nounSyns = synonyms(pairList[1], wn.NOUN)

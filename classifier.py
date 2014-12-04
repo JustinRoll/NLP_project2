@@ -10,13 +10,12 @@ from nltk.stem.snowball import SnowballStemmer
 from tagger import *
 from sklearn.ensemble import RandomForestClassifier
 import abstractness, featureExtractor
-
+from conceptmap import ConceptNetCollector
 
 class Classifier:
 
     def __init__(self):
         pass
-    
 
 
     def classifyAdjNounFigurativeFeatures(self, literalPairs, figPairs):
