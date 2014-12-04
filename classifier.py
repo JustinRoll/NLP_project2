@@ -18,8 +18,9 @@ class Classifier:
         pass
 
 
-    def classifyAdjNounFigurativeFeatures(self, literalPairs, figPairs):
-        docs = [(pair, 'lit') for pair in literalPairs] + [(pair, 'fig') for pair in figPairs]
+    def classifyAdjNounFigurativeFeatures(self, pairs):
+        #docs = [(pair, 'lit') for pair in literalPairs] + [(pair, 'fig') for pair in figPairs]
+        docs = [(pair, pair.label) for pair in pairs]
         random.shuffle(docs)
         #print(docs)
         featureSets = [(featureExtractor.getAdjNounFigurativeFeatures(d),label) for (d, label) in docs]

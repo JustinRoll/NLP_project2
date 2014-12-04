@@ -16,33 +16,33 @@ import pickle
 #any other ideas?
 
 collector = ConceptNetCollector()
-pickledPairs = pickle.load(open("pairs.p", "rb")) 
+pickledPairs = pickle.load(open("pairs.p", "rb"))
 
 def getConceptNetScores(term1, term2):
+    resultDict = collector.getAssociations('liquid', 'value').result
+    resultScore = 0
     for assoc, item in resultDict.items():
         if item and item[0] and len(item[0]) > 1:
             if assoc == 'similar':
                 for score in item:
-                    resultScore += item[0][1]  
- 
-    except:
-        print("throttled")
-        
+                    resultScore += score[1]   
     return resultScore  
 
 def getAdjNounFigurativeFeatures(pair):
-    featureDict = {}
-    pairList = pair.split(" ")
-    associationScore = pickledPairs[pair] 
-    print("%s score: %f" % (str(pairList), associationScore))
     
+    featureDict = {}
+    pairList = [pair.adj, pair.noun]
+    associationScore = pickledPairs[" ".join(pairList)]
 
-    featureDict["association_score"] = associationScore-1
+    print(associationScore)
+
+    featureDict["association_score"] = associationScore
     tags = pos_tag(word_tokenize(pair))
     adjSyns = synonyms(pairList[0], wn.ADJ) #these features suck. just an example
     nounSyns = synonyms(pairList[1], wn.NOUN)
     #featureDict["adjSyns"] = len(adjSyns)
     #featureDict["nounSyns"] = len(nounSyns)
+    print(pairList, pair.sentence)
     adjVsm  = vsmFeatures.getVector(pairList[0])
     nounVsm = vsmFeatures.getVector(pairList[1])
     if len(adjVsm) > 0:
