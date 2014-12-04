@@ -18,5 +18,5 @@ def main():
     #figPairs = getAllPairs('data/adjnoun_lit.txt')
     anPairs, svoPairs = trofiparser.parseTroFiCSV()
     classifier = Classifier()
-    print("Overall Score Average accuracy: %f" % (classifier.classifyAdjNounFigurativeFeatures(anPairs)))
+    print("Overall Score Average accuracy: %f" % classifier.classifyAdjNounFigurativeFeatures(anPairs))
 main() 

@@ -12,6 +12,8 @@ from sklearn.ensemble import RandomForestClassifier
 import abstractness, vsmFeatures
 from conceptmap import ConceptNetCollector
 import pickle
+import abstractness, vsmFeatures, wsdFeature
+
 #get number of synsets, tagged POS, path similarity, conceptNet relations
 #any other ideas?
 
@@ -32,17 +34,13 @@ def getAdjNounFigurativeFeatures(pair):
     
     featureDict = {}
     pairList = [pair.adj, pair.noun]
-    associationScore = pickledPairs[" ".join(pairList)]
-
-    print(associationScore)
-
-    featureDict["association_score"] = associationScore
-    tags = pos_tag(word_tokenize(pair))
-    adjSyns = synonyms(pairList[0], wn.ADJ) #these features suck. just an example
-    nounSyns = synonyms(pairList[1], wn.NOUN)
-    #featureDict["adjSyns"] = len(adjSyns)
-    #featureDict["nounSyns"] = len(nounSyns)
+    if " ".join(pairList) in pickledPairs:
+        associationScore = pickledPairs[" ".join(pairList)]
+        print(associationScore)
+        featureDict["association_score"] = associationScore
+    tags = pos_tag(word_tokenize(" ".join(pairList)))
     print(pairList, pair.sentence)
+    
     adjVsm  = vsmFeatures.getVector(pairList[0])
     nounVsm = vsmFeatures.getVector(pairList[1])
     if len(adjVsm) > 0:
@@ -57,4 +55,6 @@ def getAdjNounFigurativeFeatures(pair):
     featureDict["nounAbs"] = abstractness.getAbstractness(pairList[1]) #> .5
     featureDict["adjImg"] = abstractness.getImageability(pairList[0]) #> .5
     featureDict["nounImg"] = abstractness.getImageability(pairList[1]) #> .5
+
+    featureDict.update(wsdFeature.getSenseLocs((pair.adj, pair.noun), pair.sentence))
     return featureDict
