@@ -18,12 +18,15 @@ class Classifier:
         pass
 
 
-    def classifyAdjNounFigurativeFeatures(self, pairs, folds=10):
+    def classifyFigurativeFeatures(self, pairs, folds=10, met_type="an"):
         #docs = [(pair, 'lit') for pair in literalPairs] + [(pair, 'fig') for pair in figPairs]
         docs = [(pair, pair.label) for pair in pairs]
         random.shuffle(docs)
         #print(docs)
-        featureSets = [(featureExtractor.getAdjNounFigurativeFeatures(d),label) for (d, label) in docs]
+        if met_type == "an":
+            featureSets = [(featureExtractor.getAdjNounFigurativeFeatures(d),label) for (d, label) in docs]
+        else:
+            featureSets = [(featureExtractor.getSVOFeatures(d),label) for (d, label) in docs]    
         totalAcc = 0.0
         for i in range(folds):
             print("Fold", i)
@@ -37,7 +40,8 @@ class Classifier:
             print("Acc", acc)
             totalAcc += acc
         return float(totalAcc)/folds
-
+    
+    not_used = """
     def classifyAdjNounFigurativeFeaturesString(self, literalPairs, figPairs):
         docs = [(pair, 'lit') for pair in literalPairs] + [(pair, 'fig') for pair in figPairs]
         random.shuffle(docs)
@@ -48,7 +52,8 @@ class Classifier:
         classifier = SklearnClassifier(RandomForestClassifier(), sparse=False).train(train)
         #classifier = SklearnClassifier(MultinomialNB()).train(train)
         #print(classifier.show_most_informative_features(20))
-        return nltk.classify.accuracy(classifier,test)  
+        return nltk.classify.accuracy(classifier,test)
+        """
 
     def incrementDictCount(self, item, incDict):
         if item in incDict:

@@ -21,5 +21,5 @@ def main():
 
     #print("Overall Score Average accuracy: %f" % classifier.classifyAdjNounFigurativeFeaturesString(literalPairs, figPairs))
 
-    print("Overall Score Average accuracy: %f" % classifier.classifyAdjNounFigurativeFeatures(anPairs))
+    print("Overall Score Average accuracy: %f" % classifier.classifyFigurativeFeatures(svoPairs, met_type="svo", folds = 100))
 main() 

@@ -54,7 +54,61 @@ def getConceptNetScores(term1, term2):
             if assoc == 'similar':
                 for score in item:
                     resultScore += score[1]   
-    return resultScore  
+    return resultScore
+
+def getSVOFeatures(svo):
+    featureDict = {}
+
+    #not_used = """
+    subjVsm  = vsmFeatures.getVector(svo.subject)
+    verbVsm = vsmFeatures.getVector(svo.verb)
+    objVsm = vsmFeatures.getVector(svo.obj)
+    
+    if len(subjVsm) > 0:
+        for i in range(len(subjVsm)):
+            featureDict["subjVsm"+str(i)] = subjVsm[i]
+
+    if len(verbVsm) > 0:
+        for i in range(len(verbVsm)):
+            featureDict["verbVsm"+str(i)] = verbVsm[i]
+
+    if len(objVsm) > 0:
+        for i in range(len(objVsm)):
+            featureDict["objVsm"+str(i)] = objVsm[i]
+            #"""
+    #not_used = """
+    featureDict["subjAbs"] = abstractness.getAbstractness(svo.subject)
+    featureDict["verbAbs"] = abstractness.getAbstractness(svo.verb)
+    featureDict["objAbs"] = abstractness.getAbstractness(svo.obj)
+
+    featureDict["subjImg"] = abstractness.getImageability(svo.subject)
+    featureDict["verbImg"] = abstractness.getImageability(svo.verb)
+    featureDict["objImg"] = abstractness.getImageability(svo.obj)
+    #"""
+
+    #not_used = """
+    abstr = abstractness.getSentenceAbstractness(svo.sentence)
+    img = abstractness.getSentenceImageability(svo.sentence)
+    if abstr > 0:
+        featureDict["totAbstr"] = abstr
+    if img > 0:
+        featureDict["totImg"] = img
+        #"""
+
+    #not_used = """
+    triple = [svo.subject, svo.verb, svo.obj]
+    triple = [word for word in triple if word != ""]
+    featureDict.update(posFeatures.getPartOfSpeechData(triple, svo.sentence))
+    #"""
+
+    if svo.subject != "" and svo.verb != "":
+        featureDict["svCn"] = pickledSvoScores[" ".join([svo.subject, svo.verb])]
+    #if svo.subject != "" and svo.obj != "":
+    #    featureDict["soCn"] = pickledSvoScores[" ".join([svo.subject, svo.obj])]
+    if svo.obj != "" and svo.verb != "":
+        featureDict["ovCn"] = pickledSvoScores[" ".join([svo.verb, svo.obj])]
+    
+    return featureDict
 
 def getAdjNounFigurativeFeaturesString(pairString):
     featureDict = {}
