@@ -3,8 +3,9 @@ import pickle
 import time
 import sys
 import trofiparser
-
+from nltk import bigrams, trigrams, ngrams
 collector = ConceptNetCollector()
+
 
 def getConceptNetScoresMaster(term1, term2):
     try:
@@ -63,7 +64,39 @@ def getAllPairs(fileName):
         pairs.append(line.strip())
     return pairs
 
-def main():
+#class SVO:
+#def __init__(self):
+#        self.subject = ""
+#        self.verb = ""
+#        self.obj = ""
+#        self.sentence = "" 
+#        self.label = "" 
+
+def svoMain():
+    anList, svoList = trofiparser.parseTroFiCSV()
+    numRelationsSavedDict = {}
+    scoreSavedDict = {}
+    for svo in svoList:
+        svoList = []
+        if svo.subject != "":
+            svoList.append(svo.subject)
+        if svo.verb != "":
+            svoList.append(svo.verb)
+        if svo.obj != "":
+            svoList.append(svo.obj)
+        bgrams = bigrams(svoList)
+        for bgram in list(bgrams):
+            relationScore = getConceptNetNumrelationsMaster(bgram[0], bgram[1])
+            numRelationsSavedDict[" ".join(bgram)] =  relationScore
+            scoreSavedDict[" ".join(bgram)] = getConceptNetScoresMaster(bgram[0], bgram[1])
+
+    print(numRelationsSavedDict)
+    print(scoreSavedDict)
+    pickle.dump(numRelationsSavedDict, open( "SVORelationsResults.p", "wb" ))
+    pickle.dump(scoreSavedDict, open("SVOScoresResults.p", "wb"))
+
+
+def anmain():
     literalPairs = getAllPairs('data/adjnoun_fig.txt')
     figPairs = getAllPairs('data/adjnoun_lit.txt')
     savedDict = {}
@@ -87,4 +120,4 @@ def main():
         savedDict[pair] = associationScore
     pickle.dump(savedDict, open( "pairsRelationsResults.p", "wb" ))
     print(savedDict)
-main() 
+svoMain() 

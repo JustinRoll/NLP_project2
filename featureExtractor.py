@@ -13,12 +13,38 @@ import abstractness, vsmFeatures
 from conceptmap import ConceptNetCollector
 import pickle
 import abstractness, vsmFeatures, wsdFeature, posFeatures, vectorSimilarity
+import babynames
+
 
 #get number of synsets, tagged POS, path similarity, conceptNet relations
 #any other ideas?
 
 collector = ConceptNetCollector()
-pickledPairs = pickle.load(open("pairs10results2.p", "rb"))
+pickledPairs = pickle.load(open("data/ANPairScoresResults.p", "rb"))
+
+pickledSvoRelations = pickle.load(open( "data/SVORelationsResults.p", "rb"))
+pickledSvoScores = pickle.load(open( "data/SVOScoresResults.p", "rb"))
+babyNames = babynames.extract_names("data/baby1994.html")
+
+
+#for item, value in pickledSvoRelations.items():
+#    print("%s : %f" % (item, value))
+
+#for item, value in pickledSvoScores.items():
+#    print("%s : %f" % (item, value)) 
+
+def isName(subject):
+    if subject in babyNames:
+        return True
+    else:
+        return False
+
+
+#for item, score in pickledSvoScores.items():
+#    pair = item.split(" ")
+
+#    if isName(pair[0]) or isName(pair[1]):
+#        print("NAME in %s %s" % (pair[0], pair[1])) 
 
 def getConceptNetScores(term1, term2):
     resultDict = collector.getAssociations(term1, term2).result
