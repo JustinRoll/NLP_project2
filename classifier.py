@@ -18,18 +18,25 @@ class Classifier:
         pass
 
 
-    def classifyAdjNounFigurativeFeatures(self, pairs):
+    def classifyAdjNounFigurativeFeatures(self, pairs, folds=10):
         #docs = [(pair, 'lit') for pair in literalPairs] + [(pair, 'fig') for pair in figPairs]
         docs = [(pair, pair.label) for pair in pairs]
         random.shuffle(docs)
         #print(docs)
         featureSets = [(featureExtractor.getAdjNounFigurativeFeatures(d),label) for (d, label) in docs]
-        firstThird = int(len(featureSets)/3)
-        train, test = featureSets[:firstThird], featureSets[firstThird:]
-        classifier = SklearnClassifier(RandomForestClassifier(), sparse=False).train(train)
-        #classifier = SklearnClassifier(MultinomialNB()).train(train)
-        #print(classifier.show_most_informative_features(20))
-        return nltk.classify.accuracy(classifier,test) 
+        totalAcc = 0.0
+        for i in range(folds):
+            print("Fold", i)
+            random.shuffle(featureSets)
+            firstThird = int(len(featureSets)/3)
+            test, train = featureSets[:firstThird], featureSets[firstThird:]
+            classifier = SklearnClassifier(RandomForestClassifier(), sparse=False).train(train)
+            #classifier = SklearnClassifier(MultinomialNB()).train(train)
+            #print(classifier.show_most_informative_features(20))
+            acc = nltk.classify.accuracy(classifier,test)
+            print("Acc", acc)
+            totalAcc += acc
+        return float(totalAcc)/folds
 
     def classifyAdjNounFigurativeFeaturesString(self, literalPairs, figPairs):
         docs = [(pair, 'lit') for pair in literalPairs] + [(pair, 'fig') for pair in figPairs]

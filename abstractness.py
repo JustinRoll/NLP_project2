@@ -1,4 +1,4 @@
-
+import nltk
 absConDict = {}
 imgDict = {}
 
@@ -34,13 +34,38 @@ def getAbstractness(word):
     if word in dic.keys():
         return dic[word][1]
     else:
-        return .5
+        return -.1
 
 def getImageability(word):
     dic = getImgDict()
     if word in dic.keys():
         return dic[word][1]
     else:
-        return .5
+        return -.1
 
+def getSentenceAbstractness(sentence):
+     total = 0
+     count = 0
+     for word in nltk.word_tokenize(sentence):
+         abstr = getAbstractness(word)
+         if abstr > 0:
+             total += abstr
+             count += 1
+     if count > 0:
+         return float(total)/count
+     else:
+         return -.1
+
+def getSentenceImageability(sentence):
+     total = 0
+     count = 0
+     for word in nltk.word_tokenize(sentence):
+         abstr = getImageability(word)
+         if abstr > 0:
+             total += abstr
+             count += 1
+     if count > 0:
+         return float(total)/count
+     else:
+         return -.1
 

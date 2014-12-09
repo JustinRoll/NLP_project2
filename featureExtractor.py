@@ -12,7 +12,7 @@ from sklearn.ensemble import RandomForestClassifier
 import abstractness, vsmFeatures
 from conceptmap import ConceptNetCollector
 import pickle
-import abstractness, vsmFeatures, wsdFeature, posFeatures
+import abstractness, vsmFeatures, wsdFeature, posFeatures, vectorSimilarity
 
 #get number of synsets, tagged POS, path similarity, conceptNet relations
 #any other ideas?
@@ -61,28 +61,37 @@ def getAdjNounFigurativeFeaturesString(pairString):
 def getAdjNounFigurativeFeatures(pair):
     featureDict = {}
     pairList = [pair.adj, pair.noun]
-    if " ".join(pairList) in pickledPairs:
-        associationScore = pickledPairs[" ".join(pairList)]
-        print(associationScore)
-        featureDict["association_score"] = associationScore
-    tags = pos_tag(word_tokenize(" ".join(pairList)))
+    #if " ".join(pairList) in pickledPairs:
+    #    associationScore = pickledPairs[" ".join(pairList)]
+    #    print(associationScore)
+    #    featureDict["association_score"] = associationScore
+    #tags = pos_tag(word_tokenize(" ".join(pairList)))
     print(pairList, pair.sentence)
     
-    adjVsm  = vsmFeatures.getVector(pairList[0])
-    nounVsm = vsmFeatures.getVector(pairList[1])
-    if len(adjVsm) > 0:
-        for i in range(len(adjVsm)):
-            featureDict["adjVsm"+str(i)] = adjVsm[i]
+    #adjVsm  = vsmFeatures.getVector(pairList[0])
+    #nounVsm = vsmFeatures.getVector(pairList[1])
+    #if len(adjVsm) > 0:
+    #    for i in range(len(adjVsm)):
+    #        featureDict["adjVsm"+str(i)] = adjVsm[i]
 
-    if len(nounVsm) > 0:
-        for i in range(len(nounVsm)):
-            featureDict["nounVsm"+str(i)] = nounVsm[i]
+    #if len(nounVsm) > 0:
+    #    for i in range(len(nounVsm)):
+    #        featureDict["nounVsm"+str(i)] = nounVsm[i]
     
     featureDict["adjAbs"] = abstractness.getAbstractness(pairList[0]) #> .5
     featureDict["nounAbs"] = abstractness.getAbstractness(pairList[1]) #> .5
     featureDict["adjImg"] = abstractness.getImageability(pairList[0]) #> .5
     featureDict["nounImg"] = abstractness.getImageability(pairList[1]) #> .5
 
+    abstr = abstractness.getSentenceAbstractness(pair.sentence)
+    img = abstractness.getSentenceImageability(pair.sentence)
+    if abstr > 0:
+        featureDict["totAbstr"] = abstr
+    if img > 0:
+        featureDict["totImg"] = img
+
+    #featureDict.update(vectorSimilarity.getVectorSimilarity((pair.adj, pair.noun), pair.sentence))
+    #featureDict.update(vectorSimilarity.getAverageVector(pair.sentence))
     #featureDict.update(wsdFeature.getSenseLocs((pair.adj, pair.noun), pair.sentence))
     #featureDict.update(posFeatures.getPartOfSpeechData((pair.adj, pair.noun), pair.sentence))
     return featureDict
