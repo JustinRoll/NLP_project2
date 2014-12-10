@@ -93,6 +93,7 @@ def parseTroFiCSV():
             newSvo.obj = obj
             newSvo.label = "L"
             newSvo.sentence = sentence
+            print(newSvo)
             SVOList.append(newSvo) 
 
     with open('data/MET_SVO_EN.csv', newline='', encoding="utf8") as csvfile:
@@ -108,6 +109,7 @@ def parseTroFiCSV():
             newSvo.obj = obj
             newSvo.label = "M"
             newSvo.sentence = sentence
+#            print(newSvo)
             SVOList.append(newSvo) 
 
     return ANList, SVOList

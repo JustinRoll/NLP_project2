@@ -5,7 +5,7 @@ import sys
 import trofiparser
 from nltk import bigrams, trigrams, ngrams
 collector = ConceptNetCollector()
-
+import itertools
 
 def getConceptNetScoresMaster(term1, term2):
     try:
@@ -84,7 +84,8 @@ def svoMain():
             svoList.append(svo.verb)
         if svo.obj != "":
             svoList.append(svo.obj)
-        bgrams = bigrams(svoList)
+        bgrams = list(itertools.permutations(svoList, 2))
+        print(bgrams)        
         for bgram in list(bgrams):
             relationScore = getConceptNetNumrelationsMaster(bgram[0], bgram[1])
             numRelationsSavedDict[" ".join(bgram)] =  relationScore
@@ -92,8 +93,8 @@ def svoMain():
 
     print(numRelationsSavedDict)
     print(scoreSavedDict)
-    pickle.dump(numRelationsSavedDict, open( "SVORelationsResults.p", "wb" ))
-    pickle.dump(scoreSavedDict, open("SVOScoresResults.p", "wb"))
+    pickle.dump(numRelationsSavedDict, open( "data/SVORelationsResults.p", "wb" ))
+    pickle.dump(scoreSavedDict, open("data/SVOScoresResults.p", "wb"))
 
 
 def anmain():
