@@ -46,6 +46,6 @@ def getAverageVector(sentence):
     return dic
 
 #words = ("breezy", "veranda")
-sentence = "Each has its own breezy veranda for a peaceful moment before starting your day."
+#sentence = "Each has its own breezy veranda for a peaceful moment before starting your day."
 
-print(getAverageVector(sentence))
+#print(getAverageVector(sentence))
