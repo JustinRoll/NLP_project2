@@ -10,6 +10,7 @@ class ANPair:
         self.noun = ""
         self.label = ""
         self.sentence = ""
+        self.judges = []
     def __str__(self):
         return "adj: %s noun: %s label: %s sentence: %s" % (self.adj, self.noun, self.label, self.sentence)
 class SVO:
@@ -19,6 +20,7 @@ class SVO:
         self.obj = ""
         self.sentence = "" 
         self.label = ""
+        self.judges = []
     def __str__(self):
         return "subject: %s verb: %s object: %s label:%s sentence: %s" % (self.subject, self.verb, self.obj, self.label, self.sentence) 
 
@@ -58,6 +60,7 @@ def parseTroFiCSV():
         dataReader = csv.reader(csvfile, delimiter=',', quotechar='"')
         for row in dataReader:
             newAn = ANPair()
+            newAn.judges = [int(judge) for judge in row[0:5]]
             adj = row[5]
             noun = row[6]
             sentence = row[7].replace('\xa0', ' ')
@@ -71,6 +74,7 @@ def parseTroFiCSV():
         dataReader = csv.reader(csvfile, delimiter=',', quotechar='"')
         for row in dataReader:
             newAn = ANPair()
+            newAn.judges = [int(judge) for judge in row[0:5]]
             adj = row[5]
             noun = row[6]
             sentence = row[7].replace('\xa0', ' ')
@@ -85,6 +89,7 @@ def parseTroFiCSV():
         dataReader = csv.reader(csvfile, delimiter=',', quotechar='"')
         for row in dataReader:
             newSvo = SVO()
+            newSvo.judges = [int(judge) for judge in row[0:5]]
             subject = row[5]
             verb = row[6]
             obj = row[7]
@@ -100,6 +105,7 @@ def parseTroFiCSV():
         dataReader = csv.reader(csvfile, delimiter=',', quotechar='"')
         for row in dataReader:
             newSvo = SVO()
+            newSvo.judges = [int(judge) for judge in row[0:5]]
             subject = row[5]
             verb = row[6]
             obj = row[7]

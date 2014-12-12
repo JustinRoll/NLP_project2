@@ -18,9 +18,14 @@ class Classifier:
         pass
 
 
-    def classifyFigurativeFeatures(self, pairs, folds=10, met_type="an"):
+    def classifyFigurativeFeatures(self, pairs, folds=10, met_type="an", judge=None):
         #docs = [(pair, 'lit') for pair in literalPairs] + [(pair, 'fig') for pair in figPairs]
-        docs = [(pair, pair.label) for pair in pairs]
+        if judge is None:
+            docs = [(pair, pair.label) for pair in pairs]
+        else:
+            docs = [(pair, pair.judges[judge]) for pair in pairs]
+            print("woo")
+        print(docs[0])
         random.shuffle(docs)
         #print(docs)
         if met_type == "an":
@@ -33,7 +38,7 @@ class Classifier:
             random.shuffle(featureSets)
             firstThird = int(len(featureSets)/3)
             test, train = featureSets[:firstThird], featureSets[firstThird:]
-            classifier = SklearnClassifier(RandomForestClassifier(), sparse=False).train(train)
+            classifier = SklearnClassifier(RandomForestClassifier(n_estimators=50), sparse=False).train(train)
             #classifier = SklearnClassifier(MultinomialNB()).train(train)
             #print(classifier.show_most_informative_features(20))
             acc = nltk.classify.accuracy(classifier,test)

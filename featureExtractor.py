@@ -59,7 +59,7 @@ def getConceptNetScores(term1, term2):
 def getSVOFeatures(svo):
     featureDict = {}
 
-    #not_used = """
+    not_used = """
     subjVsm  = vsmFeatures.getVector(svo.subject)
     verbVsm = vsmFeatures.getVector(svo.verb)
     objVsm = vsmFeatures.getVector(svo.obj)
@@ -95,18 +95,20 @@ def getSVOFeatures(svo):
         featureDict["totImg"] = img
         #"""
 
-    #not_used = """
+    not_used = """
     triple = [svo.subject, svo.verb, svo.obj]
     triple = [word for word in triple if word != ""]
     featureDict.update(posFeatures.getPartOfSpeechData(triple, svo.sentence))
     #"""
 
+    #not_used = """
     if svo.subject != "" and svo.verb != "":
         featureDict["svCn"] = pickledSvoScores[" ".join([svo.subject, svo.verb])]
-    #if svo.subject != "" and svo.obj != "":
-    #    featureDict["soCn"] = pickledSvoScores[" ".join([svo.subject, svo.obj])]
+    if svo.subject != "" and svo.obj != "":
+        featureDict["soCn"] = pickledSvoScores[" ".join([svo.subject, svo.obj])]
     if svo.obj != "" and svo.verb != "":
         featureDict["ovCn"] = pickledSvoScores[" ".join([svo.verb, svo.obj])]
+        #"""
     
     return featureDict
 
@@ -141,10 +143,10 @@ def getAdjNounFigurativeFeaturesString(pairString):
 def getAdjNounFigurativeFeatures(pair):
     featureDict = {}
     pairList = [pair.adj, pair.noun]
-    #if " ".join(pairList) in pickledPairs:
-    #    associationScore = pickledPairs[" ".join(pairList)]
-    #    print(associationScore)
-    #    featureDict["association_score"] = associationScore
+    if " ".join(pairList) in pickledPairs:
+        associationScore = pickledPairs[" ".join(pairList)]
+        print(associationScore)
+        featureDict["association_score"] = associationScore
     #tags = pos_tag(word_tokenize(" ".join(pairList)))
     print(pairList, pair.sentence)
     
